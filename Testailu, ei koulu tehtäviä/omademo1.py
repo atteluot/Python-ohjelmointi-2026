@@ -49,8 +49,8 @@ def lentokentat_random_10(yhteys):
     tunnukset = []
     for rivi in tulos:
         tunnukset.append(rivi[0])
-
-    return tunnukset
+        if len(tunnukset) == KENTTIEN_MAARA:
+            return tunnukset
 
 def nayta_tilanne(nimi, sijainti, raha, polttoaine):
     print("\n--- PELAAJAN TILANNE ---")
@@ -92,18 +92,14 @@ def pelinaloitus():
     print("  Suunnittele reittisi siis tarkasti!")
     print("\nHyvää lentoa!\n")
 
-
 if __name__ == "__main__":
 
     yhteys = avaa_yhteys()
     pelinaloitus()
     pelaajan_nimi = input("Anna pelaajan nimi: ")
-    
     nykyinen_sijainti = KOTIKENTTA
     raha = 0
     polttoaine = ALKU_POLTTOAINE
-
-
     
     tunnukset = lentokentat_random_10(yhteys)
     tunnukset = [KOTIKENTTA] + tunnukset[:9]
@@ -122,8 +118,6 @@ if __name__ == "__main__":
         if valinta == "0":
             print("Peli lopetettu.")
             break
-        #EN TIEDÄ MITÄ TEKEE MUTTA PITI OLLA MUUTEN HEITTI ERROR JOS VÄÄRÄ MERKKI
-        #tai siis en tiedä isdigit yms
         if valinta.isdigit() and 1 <= int(valinta) <= len(tunnukset):
             indeksi = int(valinta) - 1
             polttoaine -= etaisyys_km(yhteys, nykyinen_sijainti, tunnukset[indeksi])
@@ -132,6 +126,14 @@ if __name__ == "__main__":
                 print("Hävisit pelin.")
                 break
             nykyinen_sijainti = tunnukset[indeksi]
+
+            if nykyinen_sijainti == KOTIKENTTA:
+                if raha < TAVOITE_RAHA:
+                    print("Ei ollut tarpeeksi rahaa. Hävisit pelin.")
+                    break
+                else:
+                    print("Voitit pelin.")
+                    break
         else:
             print("VÄÄRÄ VALINTA")
         #____________________________________________________________

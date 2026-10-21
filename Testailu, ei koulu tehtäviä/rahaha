@@ -1,0 +1,3 @@
+else:
+                raha = anna_rahaa_uudesta_kentasta(nykyinen_sijainti, kaydyt_kentat, raha)
+    kaydyt_kentat = set()
